@@ -23,15 +23,15 @@ namespace IfElseIfElse
             int initial = int.Parse(split[0]);
             if (split.Length == 1) return initial;
 
-            IEnumerable<(char Operator, int Value)> operations = this.ListOperations(split);
+            IEnumerable<(char Operator, int Value)> operations = this.ListOperations(split.Skip(1));
 
             return operations.Aggregate(initial,
                 (acc, current) => this._calculator.Calculate(current.Operator, acc, current.Value));
         }
 
-        private IEnumerable<(char Operator, int Value)> ListOperations(string[] split)
+        private IEnumerable<(char Operator, int Value)> ListOperations(IEnumerable<string> parts)
         {
-            var groups = split.Skip(1).Select((item, index) => new { Item = item, Index = index })
+            var groups = parts.Select((item, index) => new { Item = item, Index = index })
                 .GroupBy(x => x.Index % 2 == 0).ToDictionary(g => g.Key, g => g);
             IEnumerable<char> operators = groups[true].Select(op => char.Parse(op.Item));
             IEnumerable<int> numbers = groups[false].Select(n => int.Parse(n.Item));

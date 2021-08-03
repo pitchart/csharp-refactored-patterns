@@ -10,7 +10,12 @@ namespace IfElseIfElse.ChainOfResponsibility
         public ChainOfResponsibilityCalculator()
         {
             this._operations = new Addition().SetNext(
-                new Substraction().SetNext(new Multiplication().SetNext(new Division())));
+                new Substraction().SetNext(
+                    new Multiplication().SetNext(
+                        new Division()
+                    )
+                )
+            );
         }
 
         public int Calculate(char operation, int number, int value)
